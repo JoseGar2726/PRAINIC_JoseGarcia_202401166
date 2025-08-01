@@ -85,7 +85,7 @@ Use una brocha suave para quitar el polvo, especialmente en los conectores, ranu
 
 ## Video del mantenimiento  
 El video con la demostración completa del proceso se encuentra en el siguiente enlace:  
-[Video en YouTube](https://www.youtube.com/tu-video-aqui)  
+[Video en YouTube](https://www.youtube.com/watch?v=j21fFyItgD4)  
 
 
 ## Notas Finales  
