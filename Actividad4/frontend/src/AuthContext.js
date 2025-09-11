@@ -7,14 +7,21 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    try {
+      if (savedUser && savedUser !== "undefined") {
+        const parsed = JSON.parse(savedUser);
+        setUser(parsed.user || parsed); // para compatibilidad con antiguos guardados
+      }
+    } catch (error) {
+      console.error("Error al parsear el usuario desde localStorage:", error);
+      localStorage.removeItem("user");
     }
   }, []);
 
   const login = (userData) => {
-    setUser(userData.user);
-    localStorage.setItem("user", JSON.stringify(userData));
+    if (!userData) return;
+    setUser(userData.user); // seguimos guardando solo el user para Navbar
+    localStorage.setItem("user", JSON.stringify(userData)); // guardamos todo userData
   };
 
   const logout = () => {
@@ -30,3 +37,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+

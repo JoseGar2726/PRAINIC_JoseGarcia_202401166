@@ -7,6 +7,8 @@ import Inicio from './components/inicio';
 import Perfil from './components/perfil';
 import CrearPublicacion from './components/crearPublicacion';
 import Comentarios from './components/crearComentario';
+import RecuperarPassword from './components/recuperar';
+import VerUsuario from './components/verUsuario';
 import { AuthProvider } from './AuthContext';
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/crear-publicacion" element={<CrearPublicacion />} />
           <Route path="/comentarios/:id_publicacion" element={<Comentarios />} />
+          <Route path="/recuperar" element={<RecuperarPassword />} />
+          <Route path="/verUsuario/:id" element={<VerUsuario />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

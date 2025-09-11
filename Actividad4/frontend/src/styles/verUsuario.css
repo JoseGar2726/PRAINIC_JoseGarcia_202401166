@@ -1,0 +1,72 @@
+/* Fondo general */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f8;
+}
+
+/* Contenedor principal */
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding: 1rem;
+}
+
+/* Tarjeta de usuario */
+.user-card {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+/* Titulos y textos */
+.user-card h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.user-card p {
+  color: #4b5563; /* gris oscuro */
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* Botón volver */
+.back-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  background-color: #1e3a8a;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #2563eb; /* azul más brillante */
+}
+
+/* Mensajes de carga y error */
+.loading, .error {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.error {
+  color: #dc2626; /* rojo */
+}

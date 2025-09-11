@@ -218,5 +218,134 @@ app.get('/api/comentarios/:id_publicacion', (req, res) => {
     });
 });
 
+//RECUPERAR CONTRASEÑA
+app.post('/api/recuperar-password', (req, res) => {
+    const { registroAcademico, correo, nuevaPassword } = req.body;
+
+    if (!registroAcademico || !correo || !nuevaPassword) {
+        return res.status(400).json({ message: "Todos los campos son obligatorios" });
+    }
+
+    const verificarQuery = `
+        SELECT * FROM usuarios
+        WHERE registro_academico = ? AND correo = ?
+    `;
+
+    db.query(verificarQuery, [registroAcademico, correo], (err, results) => {
+        if (err) {
+            console.error("Error al buscar usuario:", err);
+            return res.status(500).json({ message: "Error al buscar usuario" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        const actualizarQuery = `
+            UPDATE usuarios
+            SET contrasena = ?
+            WHERE registro_academico = ? AND correo = ?
+        `;
+
+        db.query(actualizarQuery, [nuevaPassword, registroAcademico, correo], (err2, results2) => {
+            if (err2) {
+                console.error("Error al actualizar contraseña:", err2);
+                return res.status(500).json({ message: "Error al actualizar contraseña" });
+            }
+
+            res.json({ message: "Contraseña actualizada correctamente" });
+        });
+    });
+});
+
+//ACTUALIZAR PERFIL
+app.put('/api/actualizar-perfil', (req, res) => {
+    const { registroAcademico, nombres, apellidos, correo } = req.body;
+
+    if (!registroAcademico || !nombres || !apellidos || !correo) {
+        return res.status(400).json({ message: "Todos los campos obligatorios" });
+    }
+
+    const verificarQuery = `
+        SELECT * FROM usuarios
+        WHERE registro_academico = ?
+    `;
+
+    db.query(verificarQuery, [registroAcademico], (err, results) => {
+        if (err) {
+            console.error("Error al buscar usuario:", err);
+            return res.status(500).json({ message: "Error al buscar usuario" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        const actualizarQuery = `
+            UPDATE usuarios
+            SET nombres = ?, apellidos = ?, correo = ?
+            WHERE registro_academico = ?
+        `;
+
+        db.query(actualizarQuery, [nombres, apellidos, correo || null, registroAcademico], (err2, results2) => {
+            if (err2) {
+                console.error("Error al actualizar perfil:", err2);
+                return res.status(500).json({ message: "Error al actualizar perfil" });
+            }
+
+            res.json({ message: "Perfil actualizado correctamente" });
+        });
+    });
+});
+
+//BUSCAR USUARIO
+app.get('/api/usuarios/:registroAcademico', (req, res) => {
+    const { registroAcademico } = req.params;
+
+    const query = `
+        SELECT id_usuario, registro_academico, nombres, apellidos, correo
+        FROM usuarios
+        WHERE registro_academico = ?
+    `;
+
+    db.query(query, [registroAcademico], (err, results) => {
+        if (err) {
+            console.error("Error al buscar usuario:", err);
+            return res.status(500).json({ message: "Error al buscar usuario" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Usuario no registrado" });
+        }
+
+        res.json(results[0]);
+    });
+});
+
+//Buscar Usuario por id
+app.get('/api/usuarios/id/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `
+        SELECT id_usuario, registro_academico, nombres, apellidos, correo
+        FROM usuarios
+        WHERE id_usuario = ?
+    `;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Error al buscar usuario por ID:", err);
+            return res.status(500).json({ message: "Error al buscar usuario" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        res.json(results[0]);
+    });
+});
+
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
