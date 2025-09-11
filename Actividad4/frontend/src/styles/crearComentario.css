@@ -1,0 +1,68 @@
+.comentarios-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Título */
+.comentarios-title {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Publicación */
+.publicacion-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 15px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.publicacion-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.publicacion-meta {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.publicacion-sobre {
+  font-style: italic;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* Formulario de comentarios */
+.comentario-form {
+  margin-top: 20px;
+}
+
+.comentario-form textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  resize: none;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.comentario-form button {
+  background-color: #007bff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.comentario-form button:hover {
+  background-color: #0056b3;
+}

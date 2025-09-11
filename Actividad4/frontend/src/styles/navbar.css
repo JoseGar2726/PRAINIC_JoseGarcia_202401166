@@ -1,0 +1,43 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #4b6cb7, #182848);
+  color: white;
+  font-weight: bold;
+  border-bottom: 3px solid #ffcc00;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+  transition: 0.2s;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+  color: #ffcc00;
+}
+
+.navbar .session-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar button {
+  background: #ffcc00;
+  color: #182848;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.navbar button:hover {
+  background: #ffd633;
+}

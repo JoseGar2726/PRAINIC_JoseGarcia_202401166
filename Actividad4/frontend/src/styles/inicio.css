@@ -1,0 +1,103 @@
+.inicio-container {
+  padding: 20px;
+}
+
+.inicio-titulo {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.publicacion-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin: 15px 0;
+  padding: 15px;
+  background: #ffffff;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.publicacion-card:hover {
+  transform: translateY(-3px);
+}
+
+.publicacion-header {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.publicacion-mensaje {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.comentarios-container {
+  margin-top: 10px;
+  padding-left: 15px;
+  border-left: 2px solid #ddd;
+}
+
+.comentarios-container h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #1abc9c;
+}
+
+.comentario-item {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #444;
+}
+
+.comentario-item b {
+  color: #2c3e50;
+}
+
+.filtros-container {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  align-items: center;
+}
+
+.filtro-btn {
+  background: #007bff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.filtro-btn:hover {
+  background: #0056b3;
+}
+
+.filtro-btn.active {
+  background: #0056b3;
+}
+
+.filtro-input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.filtro-aplicar {
+  background: #28a745;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.filtro-aplicar:hover {
+  background: #218838;
+}

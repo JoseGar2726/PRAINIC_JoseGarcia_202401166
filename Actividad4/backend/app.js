@@ -74,5 +74,149 @@ app.post('/api/register', (req, res) => {
     });
 });
 
+// ENDPOINT PARA OBTENER PUBLICACIONES
+app.get('/api/publicaciones', (req, res) => {
+    const query = `
+        SELECT 
+            p.id_publicacion, 
+            p.mensaje, 
+            p.fecha_creacion,
+            u.nombres AS usuario_nombres, 
+            u.apellidos AS usuario_apellidos, 
+            u.registro_academico,
+            u.correo AS usuario_correo,
+            c.nombre_curso AS curso_nombre,
+            pr.nombres AS profesor_nombres,
+            pr.apellidos AS profesor_apellidos
+        FROM publicaciones p
+        JOIN usuarios u ON p.id_usuario = u.id_usuario
+        LEFT JOIN cursos c ON p.id_curso = c.id_curso
+        LEFT JOIN profesores pr ON p.id_profesor = pr.id_profesor
+        ORDER BY p.fecha_creacion DESC;
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error en la consulta:", err);
+            return res.status(500).json({ message: 'Error al obtener publicaciones', error: err });
+        }
+
+        res.json(Array.isArray(results) ? results : []);
+    });
+});
+
+//ENDPOINT PARA CREAR PUBLICACION
+app.post('/api/publicaciones', (req, res) => {
+  const { id_usuario, mensaje, id_curso, id_profesor } = req.body;
+
+  if (!id_usuario || !mensaje) {
+    return res.status(400).json({ message: 'Faltan datos para la publicación' });
+  }
+
+  const query = 'INSERT INTO publicaciones (id_usuario, mensaje, id_curso, id_profesor, fecha_creacion) VALUES (?, ?, ?, ?, NOW())';
+  db.query(query, [id_usuario, mensaje, id_curso || null, id_profesor || null], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'No se pudo crear la publicación' });
+    }
+    res.json({ message: 'Publicación creada correctamente' });
+  });
+});
+
+// Obtener cursos
+app.get('/api/cursos', (req, res) => {
+  db.query('SELECT id_curso, nombre_curso FROM cursos', (err, results) => {
+    if(err) return res.status(500).json({message: 'Error al obtener cursos'});
+    res.json(results);
+  });
+});
+
+// Obtener profesores
+app.get('/api/profesores', (req, res) => {
+  db.query('SELECT id_profesor, nombres, apellidos FROM profesores', (err, results) => {
+    if(err) return res.status(500).json({message: 'Error al obtener profesores'});
+    res.json(results);
+  });
+});
+
+//ENDPOINT OBTENER PUBLICACION ESPECIFICA - PARA COMENTARIOS
+app.get('/api/publicaciones/:id', (req, res) => {
+  const { id } = req.params;
+
+  const query = `
+    SELECT 
+      p.id_publicacion, p.mensaje, p.fecha_creacion,
+      u.nombres AS usuario_nombres,
+      u.apellidos AS usuario_apellidos,
+      u.correo AS usuario_correo,
+      c.nombre_curso AS curso_nombre,
+      pr.nombres AS profesor_nombres,
+      pr.apellidos AS profesor_apellidos
+    FROM publicaciones p
+    JOIN usuarios u ON p.id_usuario = u.id_usuario
+    LEFT JOIN cursos c ON p.id_curso = c.id_curso
+    LEFT JOIN profesores pr ON p.id_profesor = pr.id_profesor
+    WHERE p.id_publicacion = ?
+  `;
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error al obtener publicación:", err);
+      return res.status(500).json({ message: "Error al obtener publicación" });
+    }
+    if (results.length === 0) return res.status(404).json({ message: "Publicación no encontrada" });
+    res.json(results[0]);
+  });
+});
+
+//ENDPOINT PARA CREAR COMENTARIO
+app.post('/api/comentarios', (req, res) => {
+    const { id_publicacion, id_usuario, mensaje } = req.body;
+
+    if (!id_publicacion || !id_usuario || !mensaje) {
+        return res.status(400).json({ message: 'Faltan datos para el comentario' });
+    }
+
+    const query = `
+        INSERT INTO comentarios (id_publicacion, id_usuario, mensaje, fecha_creacion)
+        VALUES (?, ?, ?, NOW())
+    `;
+
+    db.query(query, [id_publicacion, id_usuario, mensaje], (err, result) => {
+        if (err) {
+            console.error("Error al crear comentario:", err);
+            return res.status(500).json({ message: 'No se pudo crear el comentario' });
+        }
+
+        res.json({ message: 'Comentario creado correctamente' });
+    });
+});
+
+
+// Obtener comentarios de una publicación
+app.get('/api/comentarios/:id_publicacion', (req, res) => {
+    const { id_publicacion } = req.params;
+
+    const query = `
+        SELECT c.id_comentario, c.id_publicacion, c.id_usuario, c.mensaje, c.fecha_creacion,
+               u.nombres AS usuario_nombres,
+               u.apellidos AS usuario_apellidos,
+               u.correo AS usuario_correo
+        FROM comentarios c
+        JOIN usuarios u ON c.id_usuario = u.id_usuario
+        WHERE c.id_publicacion = ?
+        ORDER BY c.fecha_creacion ASC
+    `;
+
+    db.query(query, [id_publicacion], (err, results) => {
+        if (err) {
+            console.error("Error al obtener comentarios:", err);
+            return res.status(500).json({ message: "Error al obtener comentarios" });
+        }
+
+        res.json(results);
+    });
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
